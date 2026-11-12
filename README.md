@@ -1,19 +1,13 @@
-# Medical Cost Data Analysis Exercise
+# Excel Data Analysis & Cleaning Portfolio
 
-This project is a data analysis exercise using Medical Cost data, solving business questions related to BMI, regional grouping, and smoking habits.
+Welcome to my Excel portfolio repository. This repository showcases practical data analysis and data cleaning projects implemented using Microsoft Excel.
 
-## Questions Addressed
+## Projects
 
-1. Group individuals into North and South regions, then calculate the number of individuals, total charges, and average BMI for each group.
-2. Group individuals into East and West regions, then calculate the number of individuals, total charges, and average BMI for each group.
-3. Categorize individuals into BMI groups: below 20, between 20 and 30, and above 30. Calculate the number of individuals and average charges for each group.
-4. Calculate the average charges for non-smokers.
-5. Calculate the average charges for smokers with a BMI above 30.
+1. **[01. Medical Cost Data Analysis](./01-Medical-Cost-Analysis)**
+   - Analysis of medical insurance charges based on regional grouping, BMI categories, and smoking status.
+   - Includes summary reports and pivot table breakdowns.
 
-## Results
-
-### Summary report
-![Summary report](screenshots/summary-report.png)
-
-### Pivot tables
-![Pivot tables](screenshots/pivot-tables.png)
+2. **[02. Excel Data Cleaning](./02-Excel-Data-Cleaning)**
+   - End-to-end data cleaning, text manipulation, and formatting using standard Excel formulas.
+   - Extracts keys, cleans phone numbers, handles dates, and standardizes addresses.
