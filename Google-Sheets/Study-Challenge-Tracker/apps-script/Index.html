@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>سامانه جامع چالش مطالعه</title>
+  <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+  
+  <style>
+    :root {
+      --primary: #10b981; --primary-hover: #059669; --primary-glow: rgba(16, 185, 129, 0.18);
+      --icon-bg: #ecfdf5; --icon-border: #d1fae5;
+      --bg: #f8fafc; --card-bg: #ffffff; --text-main: #1e293b; --text-muted: #64748b;
+      --border: #e2e8f0;
+      --error-bg: #fee2e2; --error-text: #b91c1c; --error-border: #fecaca;
+      --success-bg: #dcfce7; --success-text: #15803d; --success-border: #bbf7d0;
+    }
+
+    body.freeze-mode {
+      --primary: #f59e0b; --primary-hover: #d97706; --primary-glow: rgba(245, 158, 11, 0.2);
+      --icon-bg: #fef3c7; --icon-border: #fde68a;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Vazirmatn', sans-serif; }
+    body { background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px 16px; color: var(--text-main); transition: all 0.3s ease; }
+    .card { background: var(--card-bg); width: 100%; max-width: 450px; padding: 28px 26px; border-radius: 24px; box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.06); border: 1px solid rgba(255, 255, 255, 0.8); }
+    
+    .mode-tabs { display: flex; background: #f1f5f9; padding: 5px; border-radius: 14px; margin-bottom: 22px; gap: 6px; }
+    .tab-btn { flex: 1; padding: 10px 8px; border: none; border-radius: 10px; font-size: 13px; font-weight: 700; color: var(--text-muted); background: transparent; cursor: pointer; transition: all 0.25s ease; display: flex; align-items: center; justify-content: center; gap: 6px; }
+    .tab-btn.active-daily { background: #ffffff; color: #059669; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06); }
+    .tab-btn.active-freeze { background: #ffffff; color: #d97706; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06); }
+
+    .header { text-align: center; margin-bottom: 20px; }
+    .header-icon { width: 52px; height: 52px; background: var(--icon-bg); color: var(--primary); border-radius: 16px; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 10px; font-size: 26px; border: 1px solid var(--icon-border); transition: all 0.3s ease; }
+    .header h2 { font-size: 19px; font-weight: 800; color: #0f172a; }
+    .header p { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+
+    .form-group { margin-bottom: 18px; }
+    .form-group label { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: var(--text-muted); margin-bottom: 8px; }
+    .form-control { width: 100%; height: 48px; padding: 0 14px; border: 1.5px solid var(--border); border-radius: 14px; font-size: 14px; color: var(--text-main); background: #f8fafc; transition: all 0.2s ease; outline: none; }
+    .form-control:focus { background: #ffffff; border-color: var(--primary); box-shadow: 0 0 0 4px var(--primary-glow); }
+    
+    select.form-control { appearance: none; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2364748b'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: left 14px center; background-size: 16px; }
+
+    .status-card { background: #f8fafc; border: 1px solid var(--border); border-radius: 14px; padding: 14px 16px; margin-bottom: 18px; display: none; }
+    .status-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 13px; color: var(--text-muted); }
+    .status-row:last-child { margin-bottom: 0; }
+    .status-row span.val { font-weight: 700; color: var(--text-main); }
+    .status-row.token-row span.val { color: #d97706; background: #fef3c7; padding: 1px 8px; border-radius: 6px; }
+    .status-row.highlight span.val { color: var(--error-text); }
+
+    .btn-submit { width: 100%; height: 50px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%); color: #ffffff; border: none; border-radius: 14px; font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 14px var(--primary-glow); margin-top: 8px; }
+    .btn-submit:hover { transform: translateY(-1px); opacity: 0.96; }
+    .btn-submit:disabled { background: #cbd5e1; box-shadow: none; cursor: not-allowed; }
+
+    .spinner { width: 20px; height: 20px; border: 2.5px solid rgba(255, 255, 255, 0.3); border-top-color: #ffffff; border-radius: 50%; animation: spin 0.7s linear infinite; display: none; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    
+    #statusMsg { margin-top: 16px; padding: 12px 14px; border-radius: 12px; font-size: 13px; font-weight: 600; text-align: center; display: none; line-height: 1.6; }
+    .status-success { background-color: var(--success-bg); color: var(--success-text); border: 1px solid var(--success-border); }
+    .status-error { background-color: var(--error-bg); color: var(--error-text); border: 1px solid var(--error-border); }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <div class="mode-tabs">
+      <button type="button" id="tabDaily" class="tab-btn active-daily" onclick="switchMode('daily')">
+        <span>📚</span> گزارش روزانه
+      </button>
+      <button type="button" id="tabFreeze" class="tab-btn" onclick="switchMode('freeze')">
+        <span>⚡</span> ژتون فرصت جبران
+      </button>
+    </div>
+
+    <div class="header">
+      <div class="header-icon" id="headerIcon">📚</div>
+      <h2 id="headerTitle">ثبت گزارش مطالعه روزانه</h2>
+      <p id="headerSub">ثبت عملکرد روزانه تا ساعت ۳ بامداد روز بعد</p>
+    </div>
+
+    <form id="reportForm" onsubmit="handleSubmit(event)">
+      <div class="form-group">
+        <label><span>👤</span> نام شما (قابل جستجو)</label>
+        <input type="text" id="nameInput" class="form-control" list="namesList" placeholder="نام خود را تایپ یا انتخاب کنید..." required autocomplete="off">
+        <datalist id="namesList"></datalist>
+      </div>
+
+      <!-- کارت وضعیت کاربر برای هفته ۷ -->
+      <div class="status-card" id="statusCard">
+        <div class="status-row"><span>تارگت روزانه (هفته ۷):</span><span class="val" id="stTarget">...</span></div>
+        <div class="status-row"><span>تراز صندوق (هفته ۷):</span><span class="val" id="stBalance">...</span></div>
+        <div class="status-row"><span>مرخصی‌های مصرف‌شده:</span><span class="val" id="stLeave">...</span></div>
+        <div class="status-row token-row"><span>⚡ ژتون‌های فرصت جبران:</span><span class="val" id="stTokens">...</span></div>
+        <div class="status-row"><span>مبلغ کل جریمه:</span><span class="val" id="stPenalty">...</span></div>
+        <div class="status-row highlight"><span>مانده بدهی نهایی:</span><span class="val" id="stTotalDebt">...</span></div>
+      </div>
+
+      <div class="form-group">
+        <label><span id="dateIcon">📅</span> <span id="dateLabel">تاریخ گزارش</span></label>
+        <select id="dateSelect" class="form-control" required>
+          <option value="" disabled selected>در حال بارگذاری روزها...</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label><span>⏱️</span> <span id="minutesLabel">میزان مطالعه / وضعیت</span></label>
+        <input type="text" id="minutesInput" class="form-control" placeholder="مثلاً: 120 یا مرخصی" required>
+      </div>
+
+      <button type="submit" id="submitBtn" class="btn-submit">
+        <div class="spinner" id="btnSpinner"></div>
+        <span id="btnText">ثبت نهایی گزارش</span>
+      </button>
+
+      <div id="statusMsg"></div>
+    </form>
+  </div>
+
+  <script>
+    let currentMode = 'daily';
+    let validNames = [];
+
+    function toEnglishDigits(str) {
+      if (!str) return str;
+      return str.toString()
+        .replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d))
+        .replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d));
+    }
+
+    function switchMode(mode) {
+      currentMode = mode;
+      hideStatus();
+
+      const tabDaily = document.getElementById('tabDaily');
+      const tabFreeze = document.getElementById('tabFreeze');
+      const headerIcon = document.getElementById('headerIcon');
+      const headerTitle = document.getElementById('headerTitle');
+      const headerSub = document.getElementById('headerSub');
+      const dateLabel = document.getElementById('dateLabel');
+      const minutesLabel = document.getElementById('minutesLabel');
+      const minutesInput = document.getElementById('minutesInput');
+      const btnText = document.getElementById('btnText');
+
+      if (mode === 'freeze') {
+        document.body.classList.add('freeze-mode');
+        tabDaily.className = 'tab-btn';
+        tabFreeze.className = 'tab-btn active-freeze';
+        headerIcon.textContent = '⚡';
+        headerTitle.textContent = 'استفاده از ژتون فرصت جبران';
+        headerSub.textContent = 'ثبت عملکرد روزهای گذشته با کسر ۱ ژتون از حساب شما';
+        dateLabel.textContent = 'انتخاب تاریخ مورد نظر جهت جبران';
+        minutesLabel.textContent = 'میزان مطالعه یا وضعیت (دقیقه یا مرخصی)';
+        minutesInput.placeholder = 'مثلاً: 120 یا مرخصی';
+        btnText.textContent = 'ثبت و کسر ۱ ژتون ⚡';
+      } else {
+        document.body.classList.remove('freeze-mode');
+        tabDaily.className = 'tab-btn active-daily';
+        tabFreeze.className = 'tab-btn';
+        headerIcon.textContent = '📚';
+        headerTitle.textContent = 'ثبت گزارش مطالعه روزانه';
+        headerSub.textContent = 'ثبت عملکرد روزانه تا ساعت ۳ بامداد روز بعد';
+        dateLabel.textContent = 'تاریخ گزارش';
+        minutesLabel.textContent = 'میزان مطالعه / وضعیت';
+        minutesInput.placeholder = 'مثلاً: 120 یا مرخصی';
+        btnText.textContent = 'ثبت نهایی گزارش';
+      }
+    }
+
+    window.addEventListener('load', () => {
+      google.script.run
+        .withSuccessHandler(initForm)
+        .withFailureHandler(() => showStatus('خطا در ارتباط با سرور دیتابیس!', false))
+        .getInitialData();
+    });
+
+    function initForm(data) {
+      validNames = data.names;
+      const namesList = document.getElementById('namesList');
+      namesList.innerHTML = '';
+      data.names.forEach(name => {
+        const opt = document.createElement('option');
+        opt.value = name;
+        namesList.appendChild(opt);
+      });
+
+      const dateSelect = document.getElementById('dateSelect');
+      dateSelect.innerHTML = '<option value="" disabled selected>انتخاب تاریخ...</option>';
+      data.dates.forEach(d => {
+        const opt = document.createElement('option');
+        opt.value = d.id;
+        opt.textContent = d.text;
+        dateSelect.appendChild(opt);
+      });
+
+      const savedName = localStorage.getItem('study_user_name');
+      if (savedName && validNames.includes(savedName)) {
+        document.getElementById('nameInput').value = savedName;
+        fetchUserDetails(savedName);
+      }
+    }
+
+    document.getElementById('nameInput').addEventListener('input', function(e) {
+      const val = e.target.value.trim();
+      if (validNames.includes(val)) {
+        fetchUserDetails(val);
+      } else {
+        document.getElementById('statusCard').style.display = 'none';
+      }
+    });
+
+    function fetchUserDetails(name) {
+      document.getElementById('statusCard').style.display = 'block';
+      document.getElementById('stTarget').innerText = 'در حال دریافت...';
+      document.getElementById('stBalance').innerText = '...';
+      document.getElementById('stLeave').innerText = '...';
+      document.getElementById('stTokens').innerText = '...';
+      document.getElementById('stPenalty').innerText = '...';
+      document.getElementById('stTotalDebt').innerText = '...';
+
+      google.script.run.withSuccessHandler(res => {
+        document.getElementById('stTarget').innerText = res.target;
+        document.getElementById('stBalance').innerText = res.balance;
+        document.getElementById('stLeave').innerText = res.leaveUsed;
+        document.getElementById('stTokens').innerText = res.tokens;
+        document.getElementById('stPenalty').innerText = res.penalty;
+        document.getElementById('stTotalDebt').innerText = res.totalDebt;
+      }).getUserDetails(name);
+    }
+
+    function handleSubmit(e) {
+      e.preventDefault();
+      const name = document.getElementById('nameInput').value.trim();
+      const dayNumber = parseInt(document.getElementById('dateSelect').value, 10);
+      let minutes = toEnglishDigits(document.getElementById('minutesInput').value.trim());
+
+      if (!name || isNaN(dayNumber) || !minutes) {
+        showStatus('لطفاً تمامی فیلدها را با دقت کامل کنید.', false);
+        return;
+      }
+      if (!validNames.includes(name)) {
+        showStatus('نام وارد شده در لیست وجود ندارد. لطفاً نام خود را دقیق از لیست انتخاب کنید.', false);
+        return;
+      }
+
+      setLoading(true);
+      hideStatus();
+
+      const onSuccess = (res) => {
+        setLoading(false);
+        if (res.success) {
+          localStorage.setItem('study_user_name', name);
+          showStatus(res.message, true);
+          document.getElementById('minutesInput').value = '';
+          fetchUserDetails(name);
+        } else {
+          showStatus(res.message, false);
+        }
+      };
+
+      const onFailure = (err) => {
+        setLoading(false);
+        showStatus('خطای غیرمنتظره: ' + err.message, false);
+      };
+
+      if (currentMode === 'freeze') {
+        google.script.run
+          .withSuccessHandler(onSuccess)
+          .withFailureHandler(onFailure)
+          .submitFreezeData(name, dayNumber, minutes);
+      } else {
+        google.script.run
+          .withSuccessHandler(onSuccess)
+          .withFailureHandler(onFailure)
+          .submitData(name, dayNumber, minutes);
+      }
+    }
+
+    function setLoading(isLoading) {
+      document.getElementById('submitBtn').disabled = isLoading;
+      document.getElementById('btnSpinner').style.display = isLoading ? 'block' : 'none';
+      if (isLoading) {
+        document.getElementById('btnText').textContent = 'در حال ثبت...';
+      } else {
+        document.getElementById('btnText').textContent = (currentMode === 'freeze') 
+          ? 'ثبت و کسر ۱ ژتون ⚡' 
+          : 'ثبت نهایی گزارش';
+      }
+    }
+
+    function showStatus(msg, isSuccess) {
+      const el = document.getElementById('statusMsg');
+      el.textContent = msg;
+      el.className = isSuccess ? 'status-success' : 'status-error';
+      el.style.display = 'block';
+    }
+
+    function hideStatus() { document.getElementById('statusMsg').style.display = 'none'; }
+  </script>
+</body>
+</html>
