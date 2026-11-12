@@ -11,3 +11,7 @@ Welcome to my Excel portfolio repository. This repository showcases practical da
 2. **[02. Excel Data Cleaning](./02-Excel-Data-Cleaning)**
    - End-to-end data cleaning, text manipulation, and formatting using standard Excel formulas.
    - Extracts keys, cleans phone numbers, handles dates, and standardizes addresses.
+
+3. **[03. Global Economic Analysis](./03-Global-Economic-Analysis)**
+   - Advanced Excel data analysis using `XLOOKUP`, dynamic array functions (`FILTER`, `SORT`), and GDP ranking.
+   - Interactive country lookup, proximity analysis, and filtered indicator reports.
