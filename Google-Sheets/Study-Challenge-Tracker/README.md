@@ -1,7 +1,7 @@
 # Study Challenge Tracker
 
 A Google Sheets and Google Apps Script system built to support
-a 40-day study challenge for 50 participants.
+a 40-day study challenge for 141 participants.
 
 The project combines participant profiles, daily study tracking,
 performance reporting, and a web interface for submitting daily
