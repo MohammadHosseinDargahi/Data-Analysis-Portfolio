@@ -9,3 +9,11 @@ This project is a data analysis exercise using Medical Cost data, solving busine
 3. Categorize individuals into BMI groups: below 20, between 20 and 30, and above 30. Calculate the number of individuals and average charges for each group.
 4. Calculate the average charges for non-smokers.
 5. Calculate the average charges for smokers with a BMI above 30.
+
+## Results
+
+### Summary report
+![Summary report](screenshots/summary-report.png)
+
+### Pivot tables
+![Pivot tables](screenshots/pivot-tables.png)
