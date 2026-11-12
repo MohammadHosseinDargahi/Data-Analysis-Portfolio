@@ -2,9 +2,10 @@
 
 This project is a data analysis exercise using Medical Cost data, solving business questions related to BMI, regional grouping, and smoking habits.
 
-## Questions Addressed:
-1. Grouping individuals by North/South regions, calculating count, total charges, and average BMI.
-2. Grouping individuals by East/West regions.
-3. Categorizing individuals into 3 BMI groups (<20, 20-30, >30) and finding metrics.
-4. Average charges for non-smokers.
-5. Average charges for smokers with BMI > 30.
+## Questions Addressed
+
+1. Group individuals into North and South regions, then calculate the number of individuals, total charges, and average BMI for each group.
+2. Group individuals into East and West regions, then calculate the number of individuals, total charges, and average BMI for each group.
+3. Categorize individuals into BMI groups: below 20, between 20 and 30, and above 30. Calculate the number of individuals and average charges for each group.
+4. Calculate the average charges for non-smokers.
+5. Calculate the average charges for smokers with a BMI above 30.
